@@ -4,10 +4,10 @@ import { getProjectById } from '@/lib/projects-db';
 
 export async function GET(
     _request: Request,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> } // wrapped in Promise to clear Vercel error
 ) {
     // await params before reading id
-    const resolvedParams = await params;
+    const resolvedParams = await params; // await the params Promise
     const id = Number(resolvedParams.id);
 
     // validate ID: return 404 bad request if ID is not a valid number

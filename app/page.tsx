@@ -1,14 +1,21 @@
+// app/page.tsx
 import ProjectList from '@/components/ProjectList';
-const projects = [
+import { Project } from '@/lib/projects-db';
+
+const projects : Project[] = [
   {
+    id: 1,
     title: 'Park Planner',
     description: 'An interactive web application designed to help outdoor enthusiasts search for U.S. National Parks by activity and by state.',
+    type: 'school',
     technologies: ['JavaScript', 'CSS'],
     link: 'https://kimchristian50.github.io/cp/search.html'
   },
   {
+    id: 2,
     title: 'My Recipe Workbench',
     description: 'An interactive webb application that allows recipes to be searched, displayed, and a potential shopping list is generated.',
+    type: 'school',
     technologies: ['JavaScript', 'CSS'],
     link: 'https://kimchristian50.github.io/wdd231/final/'
   }

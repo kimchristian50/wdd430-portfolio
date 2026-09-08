@@ -1,9 +1,13 @@
 // app/projects/opensource/page.txs
 import ProjectList from '@/components/ProjectList';
 
+const baseURL = process.env.NEXT_PUBLIC_VERCEL_URL
+    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+    : 'http://localhost:3000';
+
 async function getOpensourceProjects() {
     try {
-        const res = await fetch('http://localhost:3000/api/projects?type=opensource', { cache: 'no-store' });
+        const res = await fetch(`${baseURL}/api/projects?type=opensource`, { cache: 'no-store' });
 
         if (!res.ok) return [];
 

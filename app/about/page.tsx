@@ -1,14 +1,19 @@
+// app/about/page.tsx
 import AboutList from '@/components/AboutList';
 const abouts = [
     {
+        id: 1,
         title: 'Photography',
         description: 'I had a small photography business for many years, focusing on family portraiture.',
+        type: 'school',
         image: '/image1.webp',
         link: 'https://photo.etherdox.com'
     },
     {
+        id: 2,
         title: 'Patent Analysis',
         description: 'I currently work as a patent analyst for chemical patent applications, for Global Patent Solutions, a contractor to the USPTO.',
+        type: 'work',
         image: '/image2.webp',
         link: 'https://globalpatentsolutions.com'
     }

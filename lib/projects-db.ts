@@ -6,7 +6,7 @@ export interface Project {
     type: 'opensource' | 'school';
     technologies: string[];
     link?: string;
-}
+};
 
 export const projects: Project[] = [
     {
@@ -29,8 +29,8 @@ export const projects: Project[] = [
 export function getProjects(type?: string | null): Project[] {
     if (type) return projects.filter(p => p.type === type);
     return projects;
-}
+};
 
 export function getProjectById(id: number): Project | null {
     return projects.find(p => p.id === id) ?? null;
-}
+};

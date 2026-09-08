@@ -1,9 +1,13 @@
 // app/projects/school/page.txs
 import ProjectList from '@/components/ProjectList';
 
+const baseURL = process.env.NEXT_PUBLIC_VERCEL_URL
+  ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+  : 'http://localhost:3000';
+
 async function getSchoolProjects() {
   try {
-    const res = await fetch('http://localhost:3000/api/projects?type=school', { cache: 'no-store' });
+    const res = await fetch(`${baseURL}/api/projects?type=school`, { cache: 'no-store' });
    
     // console.log('API Response Status:', res.status); // <-- LOG STATUS
 

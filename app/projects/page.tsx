@@ -1,9 +1,13 @@
 // app/projects/page.tsx
 import ProjectList from '@/components/ProjectList';
 
+const baseURL = process.env.NEXT_PUBLIC_VERCEL_URL
+    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+    : 'http://localhost:3000';
+
 async function getProjects() {
     try {
-        const res = await fetch('http://localhost:3000/api/projects', {
+        const res = await fetch(`${baseURL}/api/projects`, {
             cache: 'no-store',
         });
 
