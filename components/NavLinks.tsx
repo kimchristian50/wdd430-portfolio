@@ -25,8 +25,8 @@ export default function NavLinks() {
                         href={link.href}
                         aria-current={isActive ? 'page' : undefined}
                         className={`px-3 py-2 rounded-md font-medium transition-colors ${isActive
-                            ? 'bg-indigo-500 text-white' // Active link style
-                            : 'text-gray-300 hover:bg-gray-800' // Inactive link style
+                            ? 'bg-gray-700 text-white' // Active link style
+                            : 'text-gray-300 hover:bg-gray-900' // Inactive link style
                             }`}
                     >
                         {link.name}

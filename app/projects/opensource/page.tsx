@@ -24,7 +24,7 @@ export default async function OpensourceProjects() {
     return (
         <main className="container mx-auto px-4 py-12">
             <section className="text-center py-6">
-                <h1 className="text-4xl font-bold mb-4">School Projects</h1>
+                <h1 className="text-4xl font-bold mb-4">Opensource Projects</h1>
             </section>
             <ProjectList projects={projects} />
         </main>

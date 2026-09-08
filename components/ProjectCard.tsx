@@ -12,7 +12,7 @@ export default function ProjectCard({ title, description, type, technologies, li
     return (
         <article className="p-4 border-l-4 border-indigo-600 bg-gray-50 rounded">
             <div className="flex justify-between items-start mb-2">
-            <h3 className="text-xl font-bold mb-2">{title}</h3>
+                <h2 className="text-xl font-bold mb-2">{title}</h2>
                 {type && (
                     <span className="text-xs px-2 py-1 bg-indigo-100 text-indigo-800 rounded font-semibold capitalize">
                         {type}
