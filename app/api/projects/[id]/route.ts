@@ -16,7 +16,7 @@ export async function GET(
     }
 
     // query database
-    const project = getProjectById(id);
+    const project = await getProjectById(id);
 
     // return 404 not found if project doesn't exist
     if (!project) {

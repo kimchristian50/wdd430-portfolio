@@ -10,7 +10,8 @@ export async function GET(request: Request) {
     const type = searchParams.get('type');
 
     // Fetch filtered or full list from database
-    const projectList = getProjects(type);
+    // const projectList = getProjects(type);
+    const projects = await getProjects(type);
 
-    return NextResponse.json({ projectList });
+    return NextResponse.json({ projects });
 }
