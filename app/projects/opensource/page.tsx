@@ -1,23 +1,18 @@
 // app/projects/opensource/page.txs
 import ProjectList from '@/components/ProjectList';
+import { getProjects, Project } from '@/lib/projects-db';
 
-const baseURL = process.env.NEXT_PUBLIC_VERCEL_URL
-    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-    : 'http://localhost:3000';
-
-async function getOpensourceProjects() {
+async function getOpensourceProjects(): Promise<Project[]> {
+    // await new Promise(res => setTimeout(res, 2000));
     try {
-        const res = await fetch(`${baseURL}/api/projects?type=opensource`, { cache: 'no-store' });
+        // query the database directly on the server
+        const projects = await getProjects('opensource');
+        console.log('Fetched Data from DB:', projects);
+        return projects;
 
-        if (!res.ok) return [];
-
-        // store the parsed JSON in a variable
-        const data = await res.json();
-
-        // extract projectList array safely
-        return Array.isArray(data.projectList) ? data.projectList : [];
     } catch (error) {
-        console.error('Fetch error in opensource projects:', error);
+        // console.error('Fetch error:', error);
+        console.error('FETCH ERROR IN SERVER COMPONENT:', error); // <-- LOG ERROR
         return [];
     }
 }

@@ -10,14 +10,45 @@ export interface Project {
     link?: string;
 }
 
-export async function getProjects(type?: string | null): Promise<Project[]> {
+export async function getProjects(
+    type?: string | null,
+    query?: string,
+    page: number = 1,       // defaults to 1 if not passed
+    limit: number = 6       // defaults to 6 projects per page if not passed
+): Promise<Project[]> {
+
+    // calculate the starting position (offset)
+    const offset = (page - 1) * limit;
+
+    // format the search string for SQL wildcards
+    const searchPattern = query ? `%${query}%` : '%';
+
     if (type) {
         const { rows } = await sql<Project>`
-      SELECT * FROM projects WHERE type = ${type} ORDER BY id
+      SELECT * FROM projects
+      WHERE type = ${type} 
+      AND (
+        title ILIKE ${searchPattern} 
+        OR description ILIKE ${searchPattern}
+        OR array_to_string(technologies, ' ') ILIKE ${searchPattern}
+      )
+      ORDER BY id
+      LIMIT ${limit} OFFSET ${offset}
     `;
         return rows;
     }
-    const { rows } = await sql<Project>`SELECT * FROM projects ORDER BY id`;
+    // if there's no type
+    // the technologies field is an array so it's cast to a string inside the ILIKE check
+    const { rows } = await sql<Project>`
+    SELECT * FROM projects
+    WHERE (
+        title ILIKE ${searchPattern} 
+        OR description ILIKE ${searchPattern} 
+        OR array_to_string(technologies, ' ') ILIKE ${searchPattern} 
+)
+    ORDER BY id
+    LIMIT ${limit} OFFSET ${offset}
+`;
     return rows;
 }
 
@@ -28,21 +59,33 @@ export async function getProjectById(id: number): Promise<Project | null> {
     return rows[0] ?? null;
 }
 
-// static db for comparison:
-// export const projects: Project[] = [
-//     {
-//         id: 1,
-//         title: 'My First Open Source Contribution',
-//         description: 'A bug fix contributed to a popular library.',
-//         type: 'opensource',
-//         technologies: ['TypeScript', 'React'],
-//         link: 'https://github.com/example/repo'
-//     },
-//     {
-//         id: 2,
-//         title: 'Database Design Final Project',
-//         description: 'An ER diagram and normalized schema for a library system.',
-//         type: 'school',
-//         technologies: ['PostgreSQL', 'SQL']
-//     }
-// ];
+export async function fetchProjectsPages(
+    query: string,
+    type?: string | null,
+    limit: number = 6
+): Promise<number> {
+    const searchPattern = query ? `%${query}%` : `%`;
+
+    if (type) {
+        const { rows } = await sql<{ count: string }>`
+            SELECT COUNT(*) FROM projects 
+            WHERE type = ${type} 
+              AND (
+                  title ILIKE ${searchPattern} 
+                  OR description ILIKE ${searchPattern}
+                  OR array_to_string(technologies, ' ') ILIKE ${searchPattern}
+              )
+        `;
+        return Math.ceil(Number(rows[0].count) / limit);
+    }
+
+    const { rows } = await sql < { count: string }>`
+        SELECT COUNT(*) FROM projects
+        WHERE title ILIKE ${searchPattern} 
+           OR description ILIKE ${searchPattern}
+           OR array_to_string(technologies, ' ') ILIKE ${searchPattern}
+    `;
+
+    const totalItems = Number(rows[0].count);
+    return Math.ceil(totalItems / limit);
+}
