@@ -10,6 +10,12 @@ export interface Project {
     link?: string;
 }
 
+export interface User {
+    id: string;
+    email: string;
+    passwordHash: string;
+}
+
 export async function getProjects(
     type?: string | null,
     query?: string,
@@ -88,4 +94,23 @@ export async function fetchProjectsPages(
 
     const totalItems = Number(rows[0].count);
     return Math.ceil(totalItems / limit);
+}
+
+export async function getUserByEmail(email: string): Promise<User | null> {
+    if (email !== process.env.OWNER_EMAIL) return null;
+
+    // Prepend the bcrypt prefix that gets stripped by the env parser
+    const storedHash = process.env.OWNER_PASSWORD_HASH!;
+    const fullHash = storedHash.startsWith('$2b$')
+        ? storedHash
+        : '$2b$12$' + storedHash;
+
+    console.log('Full hash reconstructed:', fullHash);
+    console.log('Hash length:', fullHash.length);
+
+    return {
+        id: '1',
+        email: process.env.OWNER_EMAIL!,
+        passwordHash: fullHash,
+    };
 }

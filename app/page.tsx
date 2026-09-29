@@ -1,8 +1,9 @@
 // app/page.tsx
 import ProjectList from '@/components/ProjectList';
 import { Project } from '@/lib/projects-db';
+import type { Metadata } from 'next';
 
-const projects : Project[] = [
+const projects: Project[] = [
   {
     id: 1,
     title: 'Park Planner',
@@ -20,6 +21,16 @@ const projects : Project[] = [
     link: 'https://kimchristian50.github.io/wdd231/final/'
   }
 ];
+
+export const metadata: Metadata = {
+  title: {
+    default: 'Pam Christison | Project Portfolio',
+    template: '%s | Project Portfolio',
+  },
+  description:
+    'A portfolio of web development projects.',
+  metadataBase: new URL('https://wdd430-portfolio-woad.vercel.app/'),
+};
 
 export default function Home() {
   return (

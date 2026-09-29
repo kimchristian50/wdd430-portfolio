@@ -1,4 +1,5 @@
 // app/projects/page.tsx
+import { auth } from '@/auth';
 import ProjectList from '@/components/ProjectList';
 import { getProjects, fetchProjectsPages, Project } from '@/lib/projects-db';
 import ProjectSearch from '@/components/ProjectSearch';
@@ -18,6 +19,10 @@ export default async function Projects({ searchParams }: PageProps) {
     const resolvedParams = await searchParams;           // unpacks { query: '...', page: '...'}
     const query = resolvedParams?.query || '';           // defaults to empty string if not present
     const page = Number(resolvedParams?.page) || 1;      // converts string "1" to number 1
+
+    // check if the owner is logged in
+    const session = await auth();
+    const isOwner = !!session?.user;
 
     // fetch filtered & paginated projects directly from Neon Postgres
     // fetch projects AND total page count
@@ -39,10 +44,10 @@ export default async function Projects({ searchParams }: PageProps) {
             </div>
 
             {/* Project grid */}
-            <ProjectList projects={projects} />
+            <ProjectList projects={projects} isOwner={isOwner} />
 
             {/* render pagination */}
-            <Pagination totalPages ={totalPages} />
+            <Pagination totalPages={totalPages} />
         </main>
     );
 }
